@@ -1,5 +1,5 @@
 from flask import request, Response, json, Blueprint
-from src.models.user_model import User
+from src.models.user_model import Client
 from src import bcrypt, db
 from datetime import datetime, timedelta, timezone
 from src.middlewares import authentication_required
@@ -7,36 +7,28 @@ import jwt
 import os
 import uuid
 
-
-# user controller blueprint to be registered with api blueprint
 auth = Blueprint("auth", __name__)
 
-# login api/auth/signin
 @auth.route('/signin', methods = ["POST"])
 def handle_login():
     try: 
-        # first check user parameters
         data = request.json
-        if "email" and "password" in data:
-            # check db for user records
-            user = User.query.filter_by(email = data["email"]).first()
-
-            # if user records exists we will check user password
-            if user:
-                # check user password
-                if bcrypt.check_password_hash(user.password, data["password"]):
-                    # user password matched, we will generate token
+        print(data)
+        if "username" and "password" in data:
+            client = Client.query.filter_by(username = data["username"]).first()
+            if client:
+                if bcrypt.check_password_hash(client.password, data["password"]):
                     payload = {
                         'iat': datetime.now(timezone.utc),
                         'exp': datetime.now(timezone.utc) + timedelta(days=7),
-                        'user_id': user.id,
-                        'email': user.email,
+                        'user_id': client.id,
+                        'username': client.username,
                     }
                     token = jwt.encode(payload,os.getenv('SECRET_KEY'),algorithm='HS256')
                     return Response(
                             response=json.dumps({
                                     'status': True,
-                                    "message": "User Sign In Successful",
+                                    "message": "Sign In Successful",
                                     "payload": {
                                         "token": token
                                     }
@@ -46,7 +38,7 @@ def handle_login():
                         )
                 else:
                     return Response(
-                        response=json.dumps({'status': False, "message": "User Password Mistmatched"}),
+                        response=json.dumps({'status': False, "message": "Password Mistmatched"}),
                         status=401,
                         mimetype='application/json'
                     ) 
@@ -54,23 +46,24 @@ def handle_login():
             else:
                 return Response(
                     response=json.dumps({'status': False, 
-                        "message": "User Record doesn't exist, kindly register"}),
+                        "message": "User Record doesn't exist."}),
                     status=404,
                     mimetype='application/json'
                 ) 
         else:
             # if request parameters are not correct 
             return Response(
-                response=json.dumps({'status': False, "message": "User Parameters Email and Password are required"}),
+                response=json.dumps({'status': False, "message": "User Parameters Username and Password are required"}),
                 status=400,
                 mimetype='application/json'
             )
         
     except Exception as e:
         return Response(
-                response=json.dumps({'status': False, 
-                                     "message": "Error Occured",
-                                     "error": str(e)}),
+                response=json.dumps({
+                    'status': False, 
+                    "message": "Server Error Occured",
+                    "error": str(e)}),
                 status=500,
                 mimetype='application/json'
             )

@@ -25,6 +25,10 @@ app.secret_key = os.environ.get("SECRET_KEY")
 bcrypt = Bcrypt(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("MYSQL_DB_URL")
+# app.config['SQLALCHEMY_BINDS'] = {
+#     'db2': os.environ.get("SECOND_DB_URL"),  # Second database
+#     'db3': os.environ.get("THIRD_DB_URL")    # Third database (if needed)
+# }
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = os.environ.get("SQLALCHEMY_TRACK_MODIFICATIONS")
 
 app.config['PUBLIC_FOLDER'] = os.path.join(os.getcwd(), 'public')
