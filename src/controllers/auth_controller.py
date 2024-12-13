@@ -23,6 +23,7 @@ def handle_login():
                         'exp': datetime.now(timezone.utc) + timedelta(days=7),
                         'user_id': client.id,
                         'username': client.username,
+                        'role': client.role
                     }
                     token = jwt.encode(payload,os.getenv('SECRET_KEY'),algorithm='HS256')
                     return Response(
@@ -71,41 +72,35 @@ def handle_login():
         
 @auth.route('/signup', methods = ["POST"])
 def handle_signup():
-    
     try: 
-        # first validate required use parameters
-        
         data = request.json
         print(data)
-        if "email" in data and "password" in data:
-            # validate if the user exist 
-            user = User.query.filter_by(email = data["email"]).first()
-            # usecase if the user doesn't exists
-            if not user:
-                # creating the user instance of User Model to be stored in DB
-                user_obj = User(
+        if "username" in data and "password" in data:
+            client = Client.query.filter_by(username = data["username"]).first()
+            if not client:
+                client_obj = Client(
                     id = uuid.uuid4(),
-                    email = data["email"],
-                    # hashing the password
-                    password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+                    username = data["username"],
+                    password = bcrypt.generate_password_hash(data['password']).decode('utf-8'),
+                    role = True if data["role"] == "admin" else False
                 )
-                db.session.add(user_obj)
+                db.session.add(client_obj)
                 db.session.commit()
-
-                # lets generate jwt token
                 payload = {
                     'iat': datetime.now(timezone.utc),
                     'exp': datetime.now(timezone.utc) + timedelta(days=7),
-                    'user_id': user_obj.id,
-                    'email': user_obj.email,
+                    'client_id': client_obj.id,
+                    'username': client_obj.username,
+                    'role': client_obj.role
                 }
                 token = jwt.encode(payload,os.getenv('SECRET_KEY'), algorithm='HS256')
                 return Response(
                     response=json.dumps({
                         'status': True,
-                        "message": "User Sign up Successful",
+                        "message": "Sign up Successful",
                         "payload": {
-                            "token": token
+                            "token": token,
+                            "id": client_obj.id
                         }}),
                     status=201,
                     mimetype='application/json'
@@ -113,23 +108,23 @@ def handle_signup():
             else:
                 # if user already exists
                 return Response(
-                response=json.dumps({'status': False, "message": "User already exists kindly use sign in"}),
+                response=json.dumps({'status': False, "message": "User already exists."}),
                 status=409,
                 mimetype='application/json'
             )
         else:
-            # if request parameters are not correct 
             return Response(
-                response=json.dumps({'status': False, "message": "User Parameters Firstname, Lastname, Email and Password are required"}),
+                response=json.dumps({'status': False, "message": "User Parameters Username and Password are required"}),
                 status=400,
                 mimetype='application/json'
             )
         
     except Exception as e:
         return Response(
-            response=json.dumps({'status': False, 
-                                    "message": "Error Occured",
-                                    "error": str(e)}),
+            response=json.dumps({
+                'status': False, 
+                "message": "Server Error Occured",
+                "error": str(e)}),
             status=500,
             mimetype='application/json'
         )
