@@ -1,5 +1,5 @@
 from src import db
-from datetime import datetime
+from datetime import datetime, timezone
 
 class Client(db.Model):
     __tablename__ = 'clients'
@@ -12,6 +12,14 @@ class Client(db.Model):
     # plaid_access_key = db.Column(db.String(255))
     # plaid_item_id = db.Column(db.String(255))
     # plaid_data = db.Column(db.Text(4294967295))
+class ChatHistory(db.Model):
+    __tablename__ = "chathistory"
+    id = db.Column(db.String(50), primary_key = True, unique=True)
+    user_id = db.Column(db.String(50), db.ForeignKey('clients.id'), nullable=False)
+    role = db.Column(db.String(50), default=True)
+    content = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    
 
 # class SecondDBModel(db.Model):
 #     __bind_key__ = 'db2'
