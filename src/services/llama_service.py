@@ -171,8 +171,8 @@ def get_answer_from_llama(client_id, user_msg):
     trimmer = trim_messages(
         max_tokens=34500,
         strategy="last",
-        # token_counter=tiktoken_counter,
-        token_counter=llm,
+        token_counter=tiktoken_counter,
+        # token_counter=llm,
         include_system=True,
         start_on="human",
     )
