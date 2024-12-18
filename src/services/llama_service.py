@@ -169,7 +169,7 @@ def get_answer_from_llama(client_id, user_msg):
             return InMemoryChatMessageHistory()
         return chat_history
     trimmer = trim_messages(
-        max_tokens=45,
+        max_tokens=34500,
         strategy="last",
         # token_counter=tiktoken_counter,
         token_counter=llm,
