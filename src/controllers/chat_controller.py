@@ -1,6 +1,6 @@
 from flask import request, Response, Blueprint, stream_with_context, json
 from src.middlewares import authentication_required
-from src.services.chatgpt_service import get_answer_from_chatgpt
+from src.services.llama_service import get_answer_from_chatgpt, get_answer_from_llama
 from src.models.user_model import ChatHistory
 from src import db
 import uuid
@@ -25,7 +25,8 @@ def get_response(auth_data):
     try:
         response = Response(
             stream_with_context(
-                get_answer_from_chatgpt(client_id, data["message"])
+                # get_answer_from_chatgpt(client_id, data["message"])
+                get_answer_from_llama(client_id, data["message"])
             )
         )
         response.headers['Content-Type'] = 'application/json'
