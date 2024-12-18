@@ -29,9 +29,9 @@ from langchain_core.messages import BaseMessage, ToolMessage
 
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 if os.getenv("APP_ENV") == "development":        
-    llm = ChatOpenAI(model="gpt-4o-mini", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
+    llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
 else:
-    llm = ChatOpenAI(model="gpt-4o-mini", api_key=os.getenv("OPENAI_API_KEY"))
+    llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
 query_prompt_template = hub.pull("langchain-ai/sql-query-system-prompt")
 
 def str_token_counter(text: str) -> int:
@@ -163,7 +163,7 @@ def get_answer_from_llama(client_id, user_msg):
             messages.append(AIMessage(message.content))
         else:
             messages.append(HumanMessage(message.content))
-    chat_history = InMemoryChatMessageHistory(messages=messages[:-1])
+    chat_history = InMemoryChatMessageHistory(messages=messages)
     def dummy_get_session_history(session_id):
         if session_id != "1":
             return InMemoryChatMessageHistory()
@@ -171,7 +171,8 @@ def get_answer_from_llama(client_id, user_msg):
     trimmer = trim_messages(
         max_tokens=45,
         strategy="last",
-        token_counter=tiktoken_counter,
+        # token_counter=tiktoken_counter,
+        token_counter=llm,
         include_system=True,
         start_on="human",
     )
