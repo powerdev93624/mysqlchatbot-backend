@@ -39,16 +39,12 @@ def str_token_counter(text: str) -> int:
     return len(enc.encode(text))
 
 def tiktoken_counter(messages: List[BaseMessage]) -> int:
-    """Approximately reproduce https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb
-
-    For simplicity only supports str Message.contents.
-    """
     num_tokens = 3  # every reply is primed with <|start|>assistant<|message|>
     tokens_per_message = 3
     tokens_per_name = 1
     for msg in messages:
         if isinstance(msg, HumanMessage):
-            role = "user"
+            role = "user"    
         elif isinstance(msg, AIMessage):
             role = "assistant"
         elif isinstance(msg, ToolMessage):
@@ -84,7 +80,7 @@ def write_query(state: State):
     prompt = query_prompt_template.invoke(
         {
             "dialect": healthcare_db.dialect,
-            "top_k": 'unlimited',
+            "top_k": 10,
             "table_info": healthcare_db.get_table_info(),
             "input": state["question"],
         }

@@ -1,5 +1,5 @@
 from flask import request, Response, json, Blueprint
-from src.models.user_model import Client
+from src.models.user_model import Client, ChatHistory
 from src import bcrypt, db
 from datetime import datetime, timedelta, timezone
 from src.middlewares import authentication_required
@@ -47,6 +47,9 @@ def delete_user():
     try: 
         data = request.json
         client = Client.query.filter_by(id=data["id"]).first()
+        chat_history = ChatHistory.query.filter_by(user_id=data["id"]).all()
+        for chat in chat_history:
+            db.session.delete(chat)
         db.session.delete(client)
         db.session.commit()
         return Response(
