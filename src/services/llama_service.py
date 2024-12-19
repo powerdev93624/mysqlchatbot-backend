@@ -25,13 +25,16 @@ from typing import List
 
 import tiktoken
 from langchain_core.messages import BaseMessage, ToolMessage
+from langchain_ollama import OllamaLLM
 
 
-healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
-if os.getenv("APP_ENV") == "development":        
-    llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
-else:
-    llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
+llm = OllamaLLM(model="llama3.2")
+
+# healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
+# if os.getenv("APP_ENV") == "development":        
+#     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
+# else:
+#     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
 query_prompt_template = hub.pull("langchain-ai/sql-query-system-prompt")
 
 def str_token_counter(text: str) -> int:
