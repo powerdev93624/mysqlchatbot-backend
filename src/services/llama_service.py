@@ -192,6 +192,7 @@ def get_answer_from_llama(client_id, user_msg):
         f'Question: {user_state["question"]}\n'
         f'SQL Query: {user_state["query"]}\n'
         f'SQL Result: {user_state["result"]}'
+        "If SQL Result is not related to the question, please ask without SQL result."
     )
     
     llm_response = ""
