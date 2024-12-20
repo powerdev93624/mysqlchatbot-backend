@@ -164,8 +164,8 @@ def get_answer_from_llama(client_id, user_msg):
             messages.append(HumanMessage(message.content))
     chat_history = InMemoryChatMessageHistory(messages=messages)
     def dummy_get_session_history(session_id):
-        if session_id != "1":
-            return InMemoryChatMessageHistory()
+        # if session_id != "1":
+        #     return InMemoryChatMessageHistory()
         return chat_history
     trimmer = trim_messages(
         max_tokens=34500,
