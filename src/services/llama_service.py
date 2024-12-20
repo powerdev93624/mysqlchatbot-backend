@@ -154,7 +154,7 @@ def get_answer_from_chatgpt(client_id, user_msg):
     
 def get_answer_from_llama(client_id, user_msg):
     messages = [
-        SystemMessage("You are a presco AI Bot! So please answer as simple as possible. And answer like a human."),
+        SystemMessage("You are a presco AI Bot! So please answer as I am Presco AI if user ask about you. And please answer as simple as possible. And answer like a human."),
     ]
     user_chat_history = ChatHistory.query.filter_by(user_id=client_id).all()
     for message in user_chat_history:
