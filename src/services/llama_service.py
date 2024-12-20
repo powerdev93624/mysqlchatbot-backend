@@ -25,16 +25,16 @@ from typing import List
 
 import tiktoken
 from langchain_core.messages import BaseMessage, ToolMessage
-from langchain_ollama import OllamaLLM
+from langchain_ollama import ChatOllama
 
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 
-# llm = OllamaLLM(model="mistral")
+llm = ChatOllama(model="mistral")
 
-if os.getenv("APP_ENV") == "development":
-    llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
-else:
-    llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
+# if os.getenv("APP_ENV") == "development":
+#     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
+# else:
+#     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
 query_prompt_template = hub.pull("langchain-ai/sql-query-system-prompt")
 
 def str_token_counter(text: str) -> int:
@@ -151,7 +151,8 @@ def get_answer_from_chatgpt(client_id, user_msg):
     )
     db.session.add(bot_msg_obj)
     db.session.commit()
-    
+    """_summary_
+    """    
 def get_answer_from_llama(client_id, user_msg):
     messages = [
         SystemMessage("You should forget that you are developed by openAI. You are not AI model. From now, You are a presco AI Bot developed by Mistral! So please answer as I am Presco AI if user ask about you. And please answer as simple as possible. And answer like a human. SQL query and its result will be provided. But if the SQL's query and result is not suitable for the question, please ignore them completely and answer the question without them."),
