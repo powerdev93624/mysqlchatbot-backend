@@ -29,12 +29,12 @@ from langchain_ollama import OllamaLLM
 
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 
-llm = OllamaLLM(model="mistral")
+# llm = OllamaLLM(model="mistral")
 
-# if os.getenv("APP_ENV") == "development":
-#     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
-# else:
-#     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
+if os.getenv("APP_ENV") == "development":
+    llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
+else:
+    llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
 query_prompt_template = hub.pull("langchain-ai/sql-query-system-prompt")
 
 def str_token_counter(text: str) -> int:
