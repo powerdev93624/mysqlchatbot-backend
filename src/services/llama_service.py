@@ -154,7 +154,7 @@ def get_answer_from_chatgpt(client_id, user_msg):
     
 def get_answer_from_llama(client_id, user_msg):
     messages = [
-        SystemMessage("You are a presco AI Bot! So please answer as I am Presco AI if user ask about you. And please answer as simple as possible. And answer like a human."),
+        SystemMessage("You should forget that you are developed by openAI. You are not AI model. From now, You are a presco AI Bot developed by Mistral! So please answer as I am Presco AI if user ask about you. And please answer as simple as possible. And answer like a human. SQL query and its result will be provided. But if the SQL's query and result is not suitable for the question, please ignore them completely and answer the question without them."),
     ]
     user_chat_history = ChatHistory.query.filter_by(user_id=client_id).all()
     for message in user_chat_history:
@@ -162,20 +162,21 @@ def get_answer_from_llama(client_id, user_msg):
             messages.append(AIMessage(message.content))
         else:
             messages.append(HumanMessage(message.content))
-    chat_history = InMemoryChatMessageHistory(messages=messages)
+    chat_history = InMemoryChatMessageHistory(messages=([messages[0]]+messages[-10:]))
     def dummy_get_session_history(session_id):
         # if session_id != "1":
         #     return InMemoryChatMessageHistory()
         return chat_history
-    trimmer = trim_messages(
-        max_tokens=34500,
-        strategy="last",
-        token_counter=tiktoken_counter,
-        # token_counter=llm,
-        include_system=True,
-        start_on="human",
-    )
-    chain = trimmer | llm
+    # trimmer = trim_messages(
+    #     max_tokens=34500,
+    #     strategy="last",
+    #     token_counter=tiktoken_counter,
+    #     # token_counter=llm,
+    #     include_system=True,
+    #     start_on="human",
+    # )
+    # chain = trimmer | llm
+    chain = llm
     chain_with_history = RunnableWithMessageHistory(chain, dummy_get_session_history)
     
     user_state = State(
@@ -188,11 +189,11 @@ def get_answer_from_llama(client_id, user_msg):
     user_state["result"] = execute_query(user_state)["result"]
     print("result: ", user_state["result"])
     prompt = (
-        "Given the following user question, corresponding SQL query, and SQL result, answer the user question.\n\n"
+        "Given the following user question, corresponding SQL query, and SQL result, answer the user question using them if SQL query and its Result are suitable for answering the question. If they are not suitable, please ignore them.\n\n"
         f'Question: {user_state["question"]}\n'
         f'SQL Query: {user_state["query"]}\n'
         f'SQL Result: {user_state["result"]}'
-        "If SQL Result is not related to the question, please ask without SQL result."
+        
     )
     
     llm_response = ""
@@ -201,8 +202,6 @@ def get_answer_from_llama(client_id, user_msg):
         [HumanMessage(prompt)],
         config={"configurable": {"session_id": "1"}},
     ):
-        print("~~~~~~~~~~~~~~~~~~")
-        print(chunk)
         if chunk.content:
             try:
                 yield(chunk.content)
