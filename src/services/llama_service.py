@@ -88,6 +88,7 @@ def write_query(state: State):
             "input": state["question"],
         }
     )
+    print(prompt)
     structured_llm = llm.with_structured_output(QueryOutput)
     print(structured_llm.invoke("How are you?"))
     result = structured_llm.invoke(prompt)
