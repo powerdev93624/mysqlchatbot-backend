@@ -29,7 +29,7 @@ from langchain_ollama import ChatOllama
 
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 
-llm = ChatOllama(model="mistral")
+llm = ChatOllama(model="llama3.1", temperature=0)
 
 # if os.getenv("APP_ENV") == "development":
 #     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
@@ -90,6 +90,7 @@ def write_query(state: State):
     )
     structured_llm = llm.with_structured_output(QueryOutput)
     result = structured_llm.invoke(prompt)
+    print(result)
     return {"query": result["query"]}
 
 def execute_query(state: State):
