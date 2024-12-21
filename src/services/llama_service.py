@@ -164,7 +164,6 @@ def get_answer_from_llama(client_id, user_msg):
             messages.append(AIMessage(message.content))
         else:
             messages.append(HumanMessage(message.content))
-    print(messages)
     chat_history = InMemoryChatMessageHistory(messages=([messages[0]]+messages[-10:]))
     def dummy_get_session_history(session_id):
         # if session_id != "1":
@@ -186,6 +185,8 @@ def get_answer_from_llama(client_id, user_msg):
         question=user_msg,
         )
     print("question: ", user_state["question"])
+    print(write_query(user_state))
+    exit()
     user_state["query"] = write_query(user_state)["query"]
     print("query: ", user_state["query"])
     yield(user_state["query"])
