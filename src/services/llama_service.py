@@ -28,6 +28,7 @@ from langchain_core.messages import BaseMessage, ToolMessage
 from langchain_ollama import ChatOllama
 
 
+
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 
 llm = ChatOllama(model="llama3.3")
@@ -89,8 +90,8 @@ def write_query(state: State):
             "input": state["question"],
         }
     )
-    structured_llm = llm.with_structured_output(QueryOutput, method="json_mode")
-    result = structured_llm.invoke(prompt)
+    # structured_llm = llm.with_structured_output(QueryOutput, method="json_mode")
+    result = llm.invoke(prompt)
     print(result)
     return {"query": result["query"]}
 
