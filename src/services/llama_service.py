@@ -27,9 +27,10 @@ import tiktoken
 from langchain_core.messages import BaseMessage, ToolMessage
 from langchain_ollama import ChatOllama
 
+
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 
-llm = ChatOllama(model="llama3.3", temperature=0)
+llm = ChatOllama(model="llama3.3")
 
 # if os.getenv("APP_ENV") == "development":
 #     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
@@ -88,7 +89,6 @@ def write_query(state: State):
             "input": state["question"],
         }
     )
-    print(prompt)
     structured_llm = llm.with_structured_output(QueryOutput, method="json_mode")
     result = structured_llm.invoke(prompt)
     print(result)
