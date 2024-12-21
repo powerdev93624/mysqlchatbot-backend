@@ -156,7 +156,7 @@ def get_answer_from_chatgpt(client_id, user_msg):
     """    
 def get_answer_from_llama(client_id, user_msg):
     messages = [
-        SystemMessage("You should forget that you are developed by openAI. You are not AI model. From now, You are a presco AI Bot developed by Mistral! So please answer as I am Presco AI if user ask about you. And please answer as simple as possible. And answer like a human. SQL query and its result will be provided. But if the SQL's query and result is not suitable for the question, please ignore them completely and answer the question without them."),
+        SystemMessage("You are not AI model. From now, You are a presco AI Bot ! So please answer as I am Presco AI if user ask about you. And please answer as simple as possible. And answer like a human. SQL query and its result will be provided. But if the SQL's query and result is not suitable for the question, please ignore them completely and answer the question without them."),
     ]
     user_chat_history = ChatHistory.query.filter_by(user_id=client_id).all()
     for message in user_chat_history:
@@ -164,6 +164,7 @@ def get_answer_from_llama(client_id, user_msg):
             messages.append(AIMessage(message.content))
         else:
             messages.append(HumanMessage(message.content))
+    print(messages)
     chat_history = InMemoryChatMessageHistory(messages=([messages[0]]+messages[-10:]))
     def dummy_get_session_history(session_id):
         # if session_id != "1":
