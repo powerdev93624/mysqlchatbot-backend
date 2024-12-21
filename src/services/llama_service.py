@@ -31,7 +31,7 @@ from langchain_ollama import ChatOllama
 
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 
-llm = ChatOllama(model="llama3.3")
+llm = ChatOllama(model="qwq")
 
 # if os.getenv("APP_ENV") == "development":
 #     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
