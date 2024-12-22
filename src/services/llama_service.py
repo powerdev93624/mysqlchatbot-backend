@@ -90,8 +90,8 @@ def write_query(state: State):
             "input": state["question"],
         }
     )
-    # structured_llm = llm.with_structured_output(QueryOutput, method="json_mode")
-    result = llm.invoke(prompt)
+    structured_llm = llm.with_structured_output(QueryOutput, method="json_mode")
+    result = structured_llm.invoke(prompt)
     print(result)
     return {"query": result["query"]}
 
