@@ -15,6 +15,7 @@ class QueryOutput(TypedDict):
     query: Annotated[str, ..., "Syntactically valid SQL query."]
 
 def write_query(question):
+    print("question: ", question)
     prompt = query_prompt_template.invoke(
         {
             "dialect": healthcare_db.dialect,
@@ -23,7 +24,7 @@ def write_query(question):
             "input": question,
         }
     )
-    print(llm.invoke(prompt))
+    print(llm.invoke(f"Write syntactically valid SQL query for this question.\n\n qeustion: {question}"))
     # structured_llm = llm.with_structured_output(QueryOutput)
     # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     # print(structured_llm.invoke(prompt))
