@@ -1,0 +1,665 @@
+================================ System Message ================================
+
+Given an input question, create a syntactically correct mysql query to run to help find the answer. Unless the user specifies in his question a specific number of examples they wish to obtain, always limit your query to at most 10 results. You can order the results by a relevant column to return the most interesting examples in the database.
+
+Never query for all the columns from a specific table, only ask for a the few relevant columns given the question.
+
+Pay attention to use only the column names that you can see in the schema description. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which table.
+
+Only use the following tables:
+
+CREATE TABLE mst_hospital (
+        hospital_id INTEGER(11) NOT NULL AUTO_INCREMENT,
+        hospital_name VARCHAR(500) NOT NULL,
+        hospital_short_name VARCHAR(250),
+        hospital_sub_from DATETIME NOT NULL,
+        hospital_sub_to DATETIME NOT NULL,
+        hospital_sub_amt INTEGER(11) NOT NULL DEFAULT 0,
+        hospital_tablets INTEGER(11) NOT NULL DEFAULT 0,
+        hospital_gst_amt VARCHAR(100),
+        hospital_admin_name VARCHAR(500),
+        hospital_admin_mobile_isd INTEGER(11),
+        hospital_admin_mobile_no BIGINT(50),
+        hospital_admin_email_id VARCHAR(500),
+        hospital_email_id VARCHAR(500),
+        hospital_landline_no VARCHAR(100),
+        header_discharge VARCHAR(255),
+        header_billing VARCHAR(255),
+        header_pharmacy VARCHAR(255),
+        header_lab VARCHAR(255),
+        reg_no VARCHAR(255),
+        hospital_fax_no VARCHAR(500),
+        hospital_address TEXT,
+        hospital_city VARCHAR(500),
+        hospital_state VARCHAR(500),
+        hospital_country VARCHAR(500),
+        hospital_pincode INTEGER(11),
+        want_float_register TINYINT(1) DEFAULT 0,
+        eraser_password VARCHAR(255) DEFAULT '123456',
+        home_lock_password VARCHAR(255) DEFAULT '1212',
+        stylus_color_code VARCHAR(255) NOT NULL DEFAULT '#0000FF',
+        text_color_code VARCHAR(255) NOT NULL DEFAULT '#FF0000',
+        page_view_code INTEGER(1) NOT NULL COMMENT '4=Datewiese DESC,1=Categorywise,2=group,3=Datewiese ASC' DEFAULT 4,
+        photo_watermark VARCHAR(255),
+        hospital_image_name VARCHAR(500),
+        hospital_image_url VARCHAR(500),
+        hospital_logo_name VARCHAR(500),
+        hospital_logo_url VARCHAR(500),
+        v_header_image VARCHAR(500),
+        h_header_image VARCHAR(500),
+        billing_permission TINYINT(1),
+        discharge_summary_mandatory TINYINT(1),
+        allow_without_header TINYINT(1),
+        allow_discharge_new_format TINYINT(1),
+        mgl INTEGER(5),
+        mgr INTEGER(5),
+        mgt INTEGER(5),
+        mgb INTEGER(5),
+        mgh INTEGER(5) DEFAULT 0,
+        mgf INTEGER(5) DEFAULT 3,
+        mgbp INTEGER(5),
+        mgl_h INTEGER(11),
+        mgr_h INTEGER(11),
+        mgt_h INTEGER(11),
+        mgb_h INTEGER(11),
+        mgh_h INTEGER(11) DEFAULT 0,
+        mgf_h INTEGER(11) DEFAULT 3,
+        mgbp_h INTEGER(11),
+        b_mgl INTEGER(11),
+        b_mgr INTEGER(11),
+        b_mgh INTEGER(11),
+        b_mgb INTEGER(11),
+        b_mghl INTEGER(11),
+        b_mgfl INTEGER(11),
+        b_wo_mgl INTEGER(11),
+        b_wo_mgr INTEGER(11),
+        b_wo_mgt INTEGER(11),
+        b_wo_mgb INTEGER(11),
+        b_wo_mghl INTEGER(11),
+        b_wo_mgfl INTEGER(11),
+        v_mgl INTEGER(11),
+        v_mgr INTEGER(11),
+        v_mgh INTEGER(11),
+        v_mgb INTEGER(11),
+        v_mghl INTEGER(11),
+        v_mgfl INTEGER(11),
+        voucher_mgl INTEGER(11) NOT NULL DEFAULT 12,
+        voucher_mgr INTEGER(11) NOT NULL DEFAULT 5,
+        voucher_mgh INTEGER(11) NOT NULL DEFAULT 70,
+        voucher_mgb INTEGER(11) NOT NULL DEFAULT 20,
+        voucher_mghl INTEGER(11) NOT NULL DEFAULT 0,
+        voucher_mgfl INTEGER(11) NOT NULL DEFAULT 3,
+        fullpage_mgl INTEGER(11),
+        fullpage_mgr INTEGER(11),
+        fullpage_mgt INTEGER(11),
+        fullpage_mgb INTEGER(11),
+        fullpage_mghl INTEGER(11),
+        fullpage_mgfl INTEGER(11),
+        status CHAR(1),
+        discharge_summary_text TEXT CHARACTER SET utf8,
+        discharge_summary_sign TINYINT(5) COMMENT '1=Last Page, 2=All Pages',
+        admission_summary_text TEXT CHARACTER SET utf8,
+        ipd_page_count_display TINYINT(4) DEFAULT 1,
+        login_status TINYINT(1) COMMENT '0-not active, 1-active' DEFAULT 0,
+        billing_header TINYINT(1) COMMENT '1=One Page, 2=All Pages',
+        billing_patient_details TINYINT(1) COMMENT '1=One Page, 2=All Pages',
+        bill_payment_details TINYINT(5) COMMENT '1=Display On New Page,2=Display Continue',
+        uhid_auto TINYINT(1),
+        uhid_prefix VARCHAR(50),
+        uhid_start_from INTEGER(11),
+        uhid_year_format TINYINT(5) COMMENT '1=Calender Year, 2=Financial Year',
+        uhid_year TINYINT(1) COMMENT '1-Calender Year, 2- Financial Year',
+        ipd_auto TINYINT(1),
+        ipd_prefix VARCHAR(50),
+        ipd_start_from INTEGER(11),
+        ipd_year_format TINYINT(5) COMMENT '1=Calender Year, 2=Financial Year',
+        ipd_year TINYINT(1) COMMENT '1-Calender Year, 2- Financial Year',
+        opd_auto TINYINT(1),
+        opd_prefix VARCHAR(50),
+        opd_start_from INTEGER(11),
+        opd_year_format TINYINT(5) COMMENT '1=Calender Year, 2=Financial Year',
+        send_to_pharmacy TINYINT(1) DEFAULT 0,
+        opd_year TINYINT(1) COMMENT '1-Calender Year, 2- Financial Year',
+        send_to_lab TINYINT(1) DEFAULT 0,
+        created_by INTEGER(11),
+        created_on DATETIME,
+        edited_by INTEGER(11),
+        edited_on TIMESTAMP NOT NULL DEFAULT '2024-01-01 00:00:00',
+        paperlessipd_status TINYINT(1) NOT NULL DEFAULT 1,
+        prescoipd_status TINYINT(1) NOT NULL DEFAULT 0,
+        admission_font_size INTEGER(11),
+        discharge_font_size INTEGER(11),
+        ot_font_size INTEGER(11),
+        bill_font_size INTEGER(11),
+        ipd_validation TINYINT(1),
+        year_type TINYINT(1),
+        presco_lab TINYINT(1),
+        default_font_size_lab INTEGER(11),
+        mgl_lab INTEGER(11),
+        mgr_lab INTEGER(11),
+        mgt_lab INTEGER(11),
+        mgb_lab INTEGER(11),
+        mgh_lab INTEGER(11),
+        mgf_lab INTEGER(11),
+        wo_mgl_lab INTEGER(11),
+        wo_mgr_lab INTEGER(11),
+        wo_mgt_lab INTEGER(11),
+        wo_mgb_lab INTEGER(11),
+        wo_mgh_lab INTEGER(11),
+        wo_mgf_lab INTEGER(11),
+        no_auth_lab INTEGER(5),
+        bed_new_format TINYINT(1),
+        discharge_first_page_space TINYINT(1),
+        allow_admission_without_header TINYINT(1),
+        allow_admission_without_photo ENUM('0','1'),
+        admission_first_page_space TINYINT(1),
+        mgl_admission INTEGER(11),
+        mgr_admission INTEGER(11),
+        mgt_admission INTEGER(11),
+        mgb_admission INTEGER(11),
+        mgh_admission INTEGER(11),
+        mgf_admission INTEGER(11),
+        wo_mgl_admission INTEGER(11),
+        wo_mgr_admission INTEGER(11),
+        wo_mgt_admission INTEGER(11),
+        wo_mgb_admission INTEGER(11),
+        wo_mgh_admission INTEGER(11),
+        wo_mgf_admission INTEGER(11),
+        auto_discharge TINYINT(1),
+        two_step_status TINYINT(1) NOT NULL DEFAULT 0,
+        admission_qr_code TINYINT(1) COMMENT '1=Active,0=Inactive',
+        discharge_qr_code TINYINT(1) COMMENT '1=Active,0=Inactive',
+        bill_qr_code TINYINT(1) COMMENT '1=Active,0=Inactive',
+        patient_qr_code TINYINT(1) COMMENT '1=Active,0=Inactive',
+        hospital_qr_code TINYINT(1) COMMENT '1=Active,0=Inactive',
+        lab_qr_code TINYINT(1) COMMENT '1=Active,0=Inactive',
+        bill_auto TINYINT(1) COMMENT '0-not allow, 1-auto genrate' DEFAULT 0,
+        bill_start_from INTEGER(11),
+        bill_no_year_format TINYINT(1) COMMENT '1=Calender Year, 2=Financial Year',
+        login_device_status TINYINT(1) NOT NULL COMMENT '0-Normal, 1-From exe' DEFAULT 0,
+        patient_registration TINYINT(1),
+        patient_registration_web_view TINYINT(1),
+        billing_link_service TINYINT(1) NOT NULL COMMENT '0-not active, 1-active' DEFAULT 0,
+        oncology_lab_test TINYINT(1),
+        oncology_contact_person VARCHAR(250),
+        oncology_contact_no VARCHAR(250),
+        oncology_contact_email VARCHAR(250),
+        patient_history_btn_grp TINYINT(1) NOT NULL DEFAULT 0,
+        paymode_display_bill TINYINT(1),
+        login_other_status TINYINT(1),
+        hospital_type TINYINT(1) DEFAULT 1,
+        lab_no_generate_status TINYINT(1) NOT NULL COMMENT '    0-inactive, 1-active' DEFAULT 0,
+        heading_condition TINYINT(1) DEFAULT 1,
+        no_activity TINYINT(1) NOT NULL DEFAULT 0,
+        discharge_flow TINYINT(1) NOT NULL DEFAULT 0,
+        word_to_pdf TINYINT(1) NOT NULL DEFAULT 0,
+        pdf_compress TINYINT(1) NOT NULL DEFAULT 0,
+        discharge_summary_duplicate_copy TINYINT(1) NOT NULL COMMENT '1=Active',
+        discharge_summary_header_all_pages TINYINT(1) NOT NULL COMMENT '1=Active',
+        deposit_lowest_amount DECIMAL(10, 2) DEFAULT 0.00,
+        dis_text_transform VARCHAR(250) NOT NULL DEFAULT 'none',
+        patient_sticker TINYINT(1) NOT NULL DEFAULT 0,
+        billing_format TINYINT(1) NOT NULL COMMENT '0- old billing, 1-new billing' DEFAULT 0,
+        dis_patient_details_all_pages TINYINT(1),
+        dis_underline_all_header TINYINT(1),
+        dis_box_for_all_header TINYINT(1),
+        radiology_report ENUM('0','1'),
+        emergency_no VARCHAR(50),
+        patient_file_status_filter TINYINT(1),
+        appt_qr TINYINT(1) NOT NULL DEFAULT 0,
+        appt_date_past_date_allow TINYINT(4),
+        hospital_code VARCHAR(50),
+        hospital_district VARCHAR(50),
+        allow_ipd_integration TINYINT(1),
+        allow_opd_integration TINYINT(1),
+        admission_card_title VARCHAR(250),
+        addressograph_color TINYINT(4),
+        lock_ipd_after_clinical_disc TINYINT(4),
+        online_only_status TINYINT(4),
+        lab_report_sync TINYINT(1),
+        hospital_website VARCHAR(250),
+        aws_permission TINYINT(1) NOT NULL COMMENT '0-disabled, 1-enabled' DEFAULT 0,
+        adm_date_past_date_allow TINYINT(4),
+        PRIMARY KEY (hospital_id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from mst_hospital table:
+hospital_id     hospital_name   hospital_short_name     hospital_sub_from       hospital_sub_to hospital_sub_amt        hospital_tablets    hospital_gst_amt        hospital_admin_name     hospital_admin_mobile_isd       hospital_admin_mobile_no        hospital_admin_email_id     hospital_email_id       hospital_landline_no    header_discharge        header_billing  header_pharmacy header_lab reg_no   hospital_fax_no hospital_address        hospital_city   hospital_state  hospital_country        hospital_pincode        want_float_register eraser_password home_lock_password      stylus_color_code       text_color_code page_view_code  photo_watermark hospital_image_name hospital_image_url      hospital_logo_name      hospital_logo_url       v_header_image  h_header_image  billing_permission  discharge_summary_mandatory     allow_without_header    allow_discharge_new_format      mgl     mgr     mgt     mgb     mgh 
+mgf     mgbp    mgl_h   mgr_h   mgt_h   mgb_h   mgh_h   mgf_h   mgbp_h  b_mgl   b_mgr   b_mgh   b_mgb   b_mghl  b_mgfl  b_wo_mgl   b_wo_mgr b_wo_mgt        b_wo_mgb        b_wo_mghl       b_wo_mgfl       v_mgl   v_mgr   v_mgh   v_mgb   v_mghl  v_mgfl  voucher_mgl 
+voucher_mgr     voucher_mgh     voucher_mgb     voucher_mghl    voucher_mgfl    fullpage_mgl    fullpage_mgr    fullpage_mgt    fullpage_mgb        fullpage_mghl   fullpage_mgfl   status  discharge_summary_text  discharge_summary_sign  admission_summary_text  ipd_page_count_display      login_status    billing_header  billing_patient_details bill_payment_details    uhid_auto       uhid_prefix 
+uhid_start_from uhid_year_format        uhid_year       ipd_auto        ipd_prefix      ipd_start_from  ipd_year_format ipd_year   opd_auto opd_prefix      opd_start_from  opd_year_format send_to_pharmacy        opd_year        send_to_lab     created_by      created_on  edited_by       edited_on       paperlessipd_status     prescoipd_status        admission_font_size     discharge_font_size 
+ot_font_size    bill_font_size  ipd_validation  year_type       presco_lab      default_font_size_lab   mgl_lab mgr_lab mgt_lab mgb_lab     mgh_lab mgf_lab wo_mgl_lab      wo_mgr_lab      wo_mgt_lab      wo_mgb_lab      wo_mgh_lab      wo_mgf_lab      no_auth_lab 
+bed_new_format  discharge_first_page_space      allow_admission_without_header  allow_admission_without_photo   admission_first_page_space  mgl_admission   mgr_admission   mgt_admission   mgb_admission   mgh_admission   mgf_admission   wo_mgl_admission        wo_mgr_admission    wo_mgt_admission        wo_mgb_admission        wo_mgh_admission        wo_mgf_admission        auto_discharge  two_step_status     admission_qr_code       discharge_qr_code       bill_qr_code    patient_qr_code hospital_qr_code        lab_qr_code 
+bill_auto       bill_start_from bill_no_year_format     login_device_status     patient_registration    patient_registration_web_view       billing_link_service    oncology_lab_test       oncology_contact_person oncology_contact_no     oncology_contact_email  patient_history_btn_grp     paymode_display_bill    login_other_status      hospital_type   lab_no_generate_status  heading_condition  no_activity      discharge_flow  word_to_pdf     pdf_compress    discharge_summary_duplicate_copy        discharge_summary_header_all_pages  deposit_lowest_amount   dis_text_transform      patient_sticker billing_format  dis_patient_details_all_pages   dis_underline_all_header    dis_box_for_all_header  radiology_report        emergency_no    patient_file_status_filter      appt_qr appt_date_past_date_allow   hospital_code   hospital_district       allow_ipd_integration   allow_opd_integration   admission_card_title    addressograph_color lock_ipd_after_clinical_disc    online_only_status      lab_report_sync hospital_website        aws_permission  adm_date_past_date_allow
+306     CHIRAYU HOSPITAL (JAIPUR)       CHIRAYU HOSPITAL        2023-10-13 00:00:00     2024-10-12 00:00:00     32000   23      97920       None    91      None    None    None    7230025066      IPD/Discharge_header/discharge_header_1660885323.jpg    None    NoneNone    None    None    Kalwar Rd, Hathoj, Jaipur, Rajasthan 302012     Jaipur  None    None    None    0       123456  1212    #0000FF     #FF0000 4       None    None    None    None    None    None    None    0       0       1       None    20      5       45 20       None    3       None    20      5       5       20      None    3       None    12      5       120     20      None    3  12       5       120     20      None    3       12      5       120     20      None    3       12      5       70      20      0  320      2       13      12      0       3       A       <p><span style="font-size: 1rem;"> </span></p>  1       <ol><li>While taking admission I/We, have read & understood all the charges of your hospital, which         None    0       1       None    2       NoneNone    None    None    None    None    None    None    None    None    None    None    None    None    0       None    0       1  2022-08-13 10:23:44      1       2024-11-28 11:37:23     1       0       0       0       0       0       None    None    None    9  10       5       30      40      1       3       10      5       30      40      1       3       3       None    None    None    0  None     5       5       5       20      1       3       5       5       5       20      1       3       None    0       None    NoneNone    None    None    None    None    None    None    1       None    None    0       None    None    None    None    0       NoneNone    1       0       1       0       0       0       1       0       0       0.00    none    0       0       0       0       0  0None    1       0       1       None    None    None    None    None    0       0       0       0       None    1       None        
+*/
+
+
+CREATE TABLE mst_patient (
+        patient_id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        patient_registration_id INTEGER(11),
+        hospital_id INTEGER(11) NOT NULL,
+        tpa_id INTEGER(11) NOT NULL DEFAULT 0,
+        reason_id INTEGER(11) DEFAULT 1,
+        mr_number VARCHAR(50),
+        ipd_number VARCHAR(50),
+        relation_id INTEGER(11) DEFAULT 0,
+        salutation VARCHAR(100),
+        patient_name VARCHAR(100) NOT NULL,
+        date_of_admission DATETIME,
+        time_of_admission TIME,
+        admission_date_time DATETIME,
+        date_of_discharge DATETIME,
+        time_of_discharge TIME,
+        discharge_date_time DATETIME,
+        date_of_clinical_discharge DATETIME,
+        time_of_clinical_discharge TIME,
+        date_of_pharmacy_discharge DATETIME,
+        time_of_pharmacy_discharge TIME,
+        pharmacy_dis_remark VARCHAR(100),
+        date_of_billing_discharge DATETIME,
+        time_of_billing_discharge TIME,
+        date_of_transfer DATETIME,
+        time_of_transfer VARCHAR(100),
+        death_of_datetime DATETIME,
+        patient_status VARCHAR(10) COMMENT '1=Admit,2=Discharged,3=Clinical Discharge,4=Billing Discharge,5=Pharmacy Discharge,6=Lab Discharge',
+        real_fake TINYINT(1) DEFAULT 0,
+        flag INTEGER(11) COMMENT '0-Exist,1-Delete,2-Cancel' DEFAULT 0,
+        bed_text VARCHAR(100),
+        floor_id INTEGER(11),
+        bed_no VARCHAR(100),
+        contact_no VARCHAR(100),
+        country_code INTEGER(5) DEFAULT 91,
+        whatsapp_no VARCHAR(100),
+        email VARCHAR(45),
+        gender INTEGER(11),
+        ptype VARCHAR(100) DEFAULT 'Non-MLC',
+        mlc_no VARCHAR(255),
+        emp_comp_name VARCHAR(100),
+        allergic INTEGER(11) DEFAULT 0,
+        precautive INTEGER(11) DEFAULT 0,
+        patient_age VARCHAR(10),
+        patient_dob DATE,
+        age_year INTEGER(5),
+        age_month INTEGER(5),
+        age_days INTEGER(5),
+        religion_id INTEGER(11),
+        lab_id VARCHAR(255) DEFAULT '0',
+        applicable_class INTEGER(11),
+        weight VARCHAR(255),
+        height VARCHAR(255),
+        birth_asphyxia INTEGER(11) DEFAULT 0,
+        nicu_shifted INTEGER(11) DEFAULT 0,
+        blood_group VARCHAR(100),
+        term_of_baby_id INTEGER(11) DEFAULT 0,
+        mode_of_delivery_id INTEGER(11) DEFAULT 0,
+        baby_illness_id INTEGER(11) DEFAULT 0,
+        tid_no VARCHAR(100),
+        face_front VARCHAR(100),
+        aadhar_no VARCHAR(100),
+        aadhar_front VARCHAR(100),
+        aadhar_back VARCHAR(100),
+        pan_id VARCHAR(100),
+        pan_image VARCHAR(100),
+        health_id VARCHAR(100),
+        health_image VARCHAR(100),
+        signature TEXT,
+        witness_sign TEXT,
+        reception_signature VARCHAR(100),
+        nurse_signature VARCHAR(100),
+        disc_signature VARCHAR(100),
+        disc_witness_sign VARCHAR(100),
+        disc_reception_signature VARCHAR(100),
+        disc_nurse_signature VARCHAR(100),
+        finger_sign INTEGER(11) DEFAULT 0,
+        witness_finger_sign INTEGER(11) DEFAULT 0,
+        disc_finger_sign INTEGER(11) DEFAULT 0,
+        disc_witness_finger_sign INTEGER(11) DEFAULT 0,
+        covid_image VARCHAR(100),
+        hrct_image VARCHAR(100),
+        provisional_diagnosis TEXT,
+        final_diagnosis TEXT,
+        operations VARCHAR(100),
+        consulting_doctor VARCHAR(100),
+        reference_dr VARCHAR(100),
+        reference_dr_id INTEGER(11) DEFAULT 0,
+        anesthesia_dr_id INTEGER(11) DEFAULT 0,
+        other_consultant TEXT,
+        pmode INTEGER(11) COMMENT '0=cash,1=TPA,2=Scheme,3=Insurance,4=Corporate,5=Reimbursement,6=package' DEFAULT 0,
+        cash_type_id VARCHAR(100),
+        cash_details TEXT,
+        remark VARCHAR(100),
+        tpaname TEXT,
+        policy_no VARCHAR(100),
+        ccn_no VARCHAR(100),
+        insurance_id VARCHAR(100),
+        scheme INTEGER(11),
+        package_id INTEGER(11),
+        corporate_id INTEGER(11) DEFAULT 0,
+        company_name VARCHAR(100),
+        claim_status INTEGER(11) DEFAULT 0,
+        pdetail VARCHAR(30) COMMENT '1=Birth,2=Expired,3=BT,4=DAMA,5=DOR,6=Transfer' DEFAULT '0',
+        address VARCHAR(100),
+        city VARCHAR(100),
+        pincode VARCHAR(10),
+        corporation VARCHAR(11) DEFAULT '1',
+        discharge_reason INTEGER(11),
+        transfer_reason VARCHAR(100),
+        vaccination VARCHAR(100),
+        booster_dose VARCHAR(100),
+        vaccine_type VARCHAR(100),
+        vaccine_doses INTEGER(11),
+        responsible_person VARCHAR(100),
+        relationship VARCHAR(100),
+        personcontact VARCHAR(100),
+        patient_status_id INTEGER(11),
+        star_patient INTEGER(11) COMMENT '0=nonstar,1=star' DEFAULT 0,
+        file_status TINYINT(1) NOT NULL COMMENT '0-PENDING,1-SUBMITTED IN MRD,2=COMPLETED BY MRD,3=REJECTED BY MRD' DEFAULT 0,      
+        file_status_remark VARCHAR(100),
+        relative_salutation VARCHAR(100),
+        relative_name VARCHAR(100),
+        created_by INTEGER(11),
+        created_on DATETIME,
+        edited_by INTEGER(11),
+        edited_on DATETIME,
+        status CHAR(1) DEFAULT 'A',
+        old_floor_id INTEGER(11),
+        old_bed_no INTEGER(11),
+        paticatgnm VARCHAR(250),
+        crdcompname VARCHAR(250),
+        patient_guidelines TEXT,
+        patient_allergy_name VARCHAR(100),
+        patient_dioganasis_name VARCHAR(100),
+        patient_class INTEGER(11) DEFAULT 0,
+        patient_auto_discharge TINYINT(1),
+        auto_discharge_date DATE,
+        auto_discharge_time TIME,
+        user_unit INTEGER(11),
+        bed_department INTEGER(11) DEFAULT 0,
+        old_patient_identification TINYINT(1),
+        husband_name VARCHAR(100),
+        icd_code VARCHAR(100),
+        no_activity TINYINT(1) DEFAULT 0,
+        food_from TINYINT(1) COMMENT '1=From Home, 2=From Hospital',
+        birth_time TIME,
+        mother_age VARCHAR(150),
+        complaints TEXT,
+        past_history TEXT,
+        regi_type TINYINT(1) NOT NULL DEFAULT 1,
+        date_of_lab_discharge DATETIME,
+        time_of_lab_discharge TIME,
+        lab_dis_remark VARCHAR(100),
+        clinical_dis_remark VARCHAR(100),
+        cpt_data VARCHAR(500),
+        referral_dr_id INTEGER(5) UNSIGNED,
+        emergency_no VARCHAR(50),
+        is_critical_pt TINYINT(4),
+        PRIMARY KEY (patient_id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from mst_patient table:
+patient_id      patient_registration_id hospital_id     tpa_id  reason_id       mr_number       ipd_number      relation_id     salutation  patient_name    date_of_admission       time_of_admission       admission_date_time     date_of_discharge       time_of_discharge   discharge_date_time     date_of_clinical_discharge      time_of_clinical_discharge      date_of_pharmacy_discharge      time_of_pharmacy_discharge  pharmacy_dis_remark     date_of_billing_discharge       time_of_billing_discharge       date_of_transfer   time_of_transfer death_of_datetime       patient_status  real_fake       flag    bed_text        floor_id        bed_no  contact_no country_code     whatsapp_no     email   gender  ptype   mlc_no  emp_comp_name   allergic        precautive      patient_age     patient_dob age_year        age_month       age_days        religion_id     lab_id  applicable_class        weight  height  birth_asphyxia      nicu_shifted    blood_group     term_of_baby_id mode_of_delivery_id     baby_illness_id tid_no  face_front      aadhar_no  aadhar_front     aadhar_back     pan_id  pan_image       health_id       health_image    signature       witness_sign    reception_signature nurse_signature disc_signature  disc_witness_sign       disc_reception_signature        disc_nurse_signature    finger_sign 
+witness_finger_sign     disc_finger_sign        disc_witness_finger_sign        covid_image     hrct_image      provisional_diagnosis       final_diagnosis operations      consulting_doctor       reference_dr    reference_dr_id anesthesia_dr_id        other_consultant    pmode   cash_type_id    cash_details    remark  tpaname policy_no       ccn_no  insurance_id    scheme  package_id      corporate_id        company_name    claim_status    pdetail address city    pincode corporation     discharge_reason        transfer_reason     vaccination     booster_dose    vaccine_type    vaccine_doses   responsible_person      relationship    personcontact   patient_status_id   star_patient    file_status     file_status_remark      relative_salutation     relative_name   created_by      created_on  edited_by       edited_on       status  old_floor_id    old_bed_no      paticatgnm      crdcompname     patient_guidelines patient_allergy_name     patient_dioganasis_name patient_class   patient_auto_discharge  auto_discharge_date     auto_discharge_time 
+user_unit       bed_department  old_patient_identification      husband_name    icd_code        no_activity     food_from       birth_time  mother_age      complaints      past_history    regi_type       date_of_lab_discharge   time_of_lab_discharge   lab_dis_remark      clinical_dis_remark     cpt_data        referral_dr_id  emergency_no    is_critical_pt
+1077630 None    306     0       1       240083018       051906  0       Mr.     VISHNU          2024-11-15 00:00:00     02:23:00   2024-11-15 02:23:00      2024-11-15 00:00:00     10:20:00        2024-11-15 10:20:00     None    None    None    None    None    NoneNone    None    None    None    1       0       0       None    None    8704    7737338493      91      7737338493      None    1  Non-MLC  None    None    None    None    28      None    0       0       0       None    None    None    None    None    None    NoneNone    None    None    None    None    None    None    None    None    None    None    None    None    None    None    None    NoneNone    None    None    None    0       0       0       0       None    None    None    None    None    12237   None    None    0  12237    0       14      None    None    None    None    None    None    None    None    None    None    0       None    ..      NoneNone    None    None    None    None    None    None    None    None    None    None    None    0       0       None    None    None38759   2024-11-15 02:25:18     None    2024-11-16 17:04:23     A       None    None    None    None    None    None    None    0  None     None    None    None    None    None    None    None    0       None    None    None    None    None    1       None    NoneNone    None    None    None    None    None
+1103578 None    306     0       1       240065561       052104  0       Mr.     SACHIN KUMAR            2024-11-28 00:00:00     11:21:00    2024-11-28 11:21:00     2024-12-02 00:00:00     11:22:00        2024-12-02 11:22:00     None    None    None    None    NoneNone    None    None    None    None    2       0       0       None    None    8666    6376626402      91      6376626402      None1       Non-MLC None    None    None    None    26      None    0       0       0       None    None    None    None    None    NoneNone    None    None    None    None    T28112435303705 None    None    None    None    None    None    None    None    None    NoneNone    None    None    None    None    None    0       0       0       0       None    None    None    None    None    12224   NoneNone    0       12224   2       None    None    None    None    None    None    None    22      None    None    None    0       Nonejhunjhunnu      None    None    None    4               None    None    None    None    None    None    None    None    0       1  None     None    None    45473   2024-11-28 11:26:29     None    2024-12-02 10:36:26     A       None    None    None    None    NoneNone    None    0       None    None    None    None    None    None    None    None    0       None    None    None    None    None1       None    None    None    None    None    None    None    None
+1103774 None    306     0       1       240081221       052106  0       Mast.   AYUSH SHARMA    2024-11-28 00:00:00     12:22:00   2024-11-28 12:22:00      2024-12-02 00:00:00     11:12:00        2024-12-02 11:12:00     None    None    None    None    None    NoneNone    None    None    None    2       None    0       None    1538    8664    9314617249      91      9314617249      None    1  Non-MLC  None    None    None    None    13      None    0       0       0       None    None    None    None    None    None    NoneNone    None    None    None    None    None    None    None    None    None    None    None    None    None    None    None    NoneNone    None    None    None    0       0       0       0       None    None    None    None    None    12245   None    None    0  None     1       None    None    None    None    None    None    None    None    None    None    None    0       None    JAIPUR  NoneNone    None    4               None    None    None    None    None    None    None    None    0       1       None    None    None45560   2024-11-28 12:25:39     None    None    A       None    None    None    None    None    None    None    0       None    NoneNone    None    None    None    None    None    0       None    None    None    None    None    1       None    None    None    NoneNone    None    None    None
+*/
+
+
+CREATE TABLE patient_registry (
+        `ID` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        age INTEGER(11) NOT NULL,
+        patient_id VARCHAR(255),
+        consultant_dr VARCHAR(100),
+        referred_by VARCHAR(100),
+        ward_bed VARCHAR(50),
+        registered_on DATETIME,
+        PRIMARY KEY (`ID`),
+        CONSTRAINT patient_registry_ibfk_1 FOREIGN KEY(`ID`) REFERENCES patients (`Id`) ON DELETE CASCADE
+)DEFAULT CHARSET=utf8mb4 ENGINE=InnoDB
+
+/*
+3 rows from patient_registry table:
+ID      age     patient_id      consultant_dr   referred_by     ward_bed        registered_on
+1       33      139 / 24-25 (IPD)       Dr. Akshaya Shetty      Dr. HARSHAD CHANDRA     GENERAL_WARD_FEMALE / 01        2024-04-23 12:57:00
+2       28      821 / 24-25 (IPD)       Dr. UTKARSH ANGACHEKAR  Self    SECOND_CLASS / 01       2024-07-24 19:43:00
+3       70      2002 / 22-23 (IPD)      Dr. Salman Ali Sayed    Self    GENERAL_WARD_MALE / 06  2023-02-26 18:44:00
+*/
+
+
+CREATE TABLE patients (
+        `Id` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        uhid_no VARCHAR(50) NOT NULL,
+        `Name` VARCHAR(100) NOT NULL,
+        `Gender` ENUM('male','female','other') NOT NULL,
+        PRIMARY KEY (`Id`)
+)DEFAULT CHARSET=utf8mb4 ENGINE=InnoDB
+
+/*
+3 rows from patients table:
+Id      uhid_no Name    Gender
+1       176062  Mrs. Pratima Verma      female
+2       180154  Mr. Qudar Sayyed        male
+3       157532  Mr. Shabbir Ahmed Khan  male
+*/
+
+
+CREATE TABLE pma_patient_notes1 (
+        id INTEGER(11) NOT NULL AUTO_INCREMENT,
+        patient_id INTEGER(11) NOT NULL,
+        admin_key VARCHAR(250) NOT NULL,
+        category_type_id INTEGER(11) NOT NULL,
+        sub_category_id INTEGER(11) NOT NULL,
+        folder_id INTEGER(11) NOT NULL DEFAULT 0,
+        notes LONGTEXT NOT NULL,
+        note_remark TEXT,
+        data_size VARCHAR(255) NOT NULL DEFAULT '0',
+        thumbnail VARCHAR(250),
+        page_id INTEGER(11) NOT NULL,
+        pharmacy_status INTEGER(11) COMMENT '0-pending,1-Done' DEFAULT 0,
+        lock_unlock INTEGER(11) COMMENT '0=Unlock,1=Lock' DEFAULT 0,
+        `IntegrationOrderId` VARCHAR(250),
+        `LabId` BIGINT(20),
+        added DATETIME NOT NULL,
+        updated DATETIME NOT NULL,
+        transfer_by VARCHAR(255),
+        transfer_at DATETIME NOT NULL,
+        done_by INTEGER(11),
+        done_at DATETIME,
+        done_by_name VARCHAR(250),
+        whatsapp_count TINYINT(10),
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from pma_patient_notes1 table:
+id      patient_id      admin_key       category_type_id        sub_category_id folder_id       notes   note_remark     data_size  thumbnail        page_id pharmacy_status lock_unlock     IntegrationOrderId      LabId   added   updated transfer_by     transfer_at 
+done_by done_at done_by_name    whatsapp_count
+56060438        1077630 306     11676   0       0       IPD/306/2024/1077630/d_1077630_11676_1732956740753.png          152.24  None34      0       0       None    None    2024-11-26 11:02:28     2024-11-30 14:22:21     None    None    None    None    None    None56213442        1077630 306     11683   0       0       IPD/306/2024/1077630/d_1077630_11683_1732985325823.png          134.16  None7       0       0       None    None    2024-11-27 18:34:13     2024-11-30 22:18:47     None    None    None    None    None    None56230663        1077630 306     11683   0       0       IPD/306/2024/1077630/d_1077630_11683_1733232386251.png          140.32  None8       0       0       None    None    2024-11-27 22:08:15     2024-12-03 18:56:27     None    None    None    None    None    None*/
+
+
+CREATE TABLE report_data (
+        `ID` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        patient_registry_id INTEGER(11) NOT NULL,
+        reported_on DATETIME NOT NULL,
+        `test_ID` INTEGER(11) NOT NULL,
+        PRIMARY KEY (`ID`),
+        CONSTRAINT report_data_ibfk_1 FOREIGN KEY(patient_registry_id) REFERENCES patient_registry (`ID`),
+        CONSTRAINT report_data_ibfk_2 FOREIGN KEY(`test_ID`) REFERENCES tests (`ID`)
+)DEFAULT CHARSET=utf8mb4 ENGINE=InnoDB
+
+/*
+3 rows from report_data table:
+ID      patient_registry_id     reported_on     test_ID
+1       1       2024-04-23 16:10:00     3
+2       1       2024-04-23 16:10:00     5
+3       2       2024-07-28 12:05:00     3
+*/
+
+
+CREATE TABLE tbl_note_clinical_notes_data (
+        id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        note_id INTEGER(11) UNSIGNED NOT NULL,
+        clinical_notes TEXT NOT NULL,
+        pos_x FLOAT(10, 2),
+        pos_y FLOAT(10, 2),
+        added TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+        updated TIMESTAMP NULL,
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from tbl_note_clinical_notes_data table:
+id      note_id clinical_notes  pos_x   pos_y   added   updated
+83      56400596        Gggg    25.0    530.9   2024-11-29 07:19:42     2024-11-29 07:19:42
+84      56401015        Gggg    25.0    530.9   2024-11-29 07:23:35     2024-11-29 07:23:35
+85      56401032        Gggg    25.0    530.9   2024-11-29 07:23:45     2024-11-29 07:23:45
+*/
+
+
+CREATE TABLE tbl_note_diagnosis_data (
+        id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        note_id INTEGER(11) UNSIGNED NOT NULL,
+        icd_code VARCHAR(150) NOT NULL,
+        diagnosis VARCHAR(250) NOT NULL,
+        pos_x FLOAT(10, 2),
+        pos_y FLOAT(10, 2),
+        added TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+        updated TIMESTAMP NULL,
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from tbl_note_diagnosis_data table:
+id      note_id icd_code        diagnosis       pos_x   pos_y   added   updated
+19      56515001                # DISTAL END OF RADIUS  25.0    530.9   2024-11-30 08:40:56     2024-11-30 08:40:56
+20      56515624                # DISTAL END OF RADIUS  25.0    530.9   2024-11-30 08:49:08     2024-11-30 08:49:08
+21      56515654                # DISTAL END OF RADIUS  25.0    530.9   2024-11-30 08:49:34     2024-11-30 08:49:34
+*/
+
+
+CREATE TABLE tbl_note_medicine_data (
+        id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        note_id INTEGER(11) UNSIGNED NOT NULL,
+        medicine VARCHAR(250),
+        route VARCHAR(100),
+        m_qty VARCHAR(100),
+        a_qty VARCHAR(100),
+        e_qty VARCHAR(100),
+        n_qty VARCHAR(100),
+        abf VARCHAR(250) CHARACTER SET utf8,
+        duration VARCHAR(250) CHARACTER SET utf8,
+        unit VARCHAR(255) DEFAULT 'Days',
+        instructions VARCHAR(500) CHARACTER SET utf8,
+        added TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+        updated TIMESTAMP NULL,
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from tbl_note_medicine_data table:
+id      note_id medicine        route   m_qty   a_qty   e_qty   n_qty   abf     duration        unit    instructions    added   updated
+146     56515001        TAB ABYPHYLILINE SR 200 MG      Oral    1       0       0       0       After Food      1       Days       2024-11-30 08:40:56      2024-11-30 08:40:56
+147     56515001        B D SYRINGES 5 CC               0       0       0       0                                       2024-11-30 08:40:56 2024-11-30 08:40:56
+148     56515001        CAP CANDIFORCE 200MG            0       0       0       0                                       2024-11-30 08:40:56 2024-11-30 08:40:56
+*/
+
+
+CREATE TABLE tbl_note_nurses_notes_data (
+        id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        note_id INTEGER(11) UNSIGNED NOT NULL,
+        nurses_notes TEXT NOT NULL,
+        pos_x FLOAT(10, 2),
+        pos_y FLOAT(10, 2),
+        added TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+        updated TIMESTAMP NULL,
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from tbl_note_nurses_notes_data table:
+id      note_id nurses_notes    pos_x   pos_y   added   updated
+342     56455475                25.0    530.9   2024-11-29 17:40:29     2024-11-29 17:40:29
+343     56455475                25.0    530.9   2024-11-29 17:41:47     2024-11-29 17:41:47
+344     56404610                25.0    530.9   2024-11-29 17:42:39     2024-11-29 17:42:39
+*/
+
+
+CREATE TABLE tbl_note_symptoms_data (
+        id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        note_id INTEGER(11) UNSIGNED NOT NULL,
+        symptoms TEXT NOT NULL,
+        pos_x FLOAT(10, 2),
+        pos_y FLOAT(10, 2),
+        added TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+        updated TIMESTAMP NULL,
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from tbl_note_symptoms_data table:
+id      note_id symptoms        pos_x   pos_y   added   updated
+17      56402169        See where respiratory discharge with orthopenea with gasting condition having already CET and Hospit    25.0530.9   2024-11-29 07:33:33     2024-11-29 07:33:33
+18      56402428        See where respiratory discharge with orthopenea with gasting condition having already CET and Hospit    25.0530.9   2024-11-29 07:35:48     2024-11-29 07:35:48
+19      56402446        See where respiratory discharge with orthopenea with gasting condition having already CET and Hospit    25.0530.9   2024-11-29 07:35:57     2024-11-29 07:35:57
+*/
+
+
+CREATE TABLE test_catalog (
+        `ID` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        test_description VARCHAR(255) NOT NULL,
+        reference_range VARCHAR(255),
+        `test_ID` INTEGER(11) NOT NULL,
+        PRIMARY KEY (`ID`),
+        CONSTRAINT test_catalog_ibfk_1 FOREIGN KEY(`test_ID`) REFERENCES tests (`ID`)
+)DEFAULT CHARSET=utf8mb4 ENGINE=InnoDB
+
+/*
+3 rows from test_catalog table:
+ID      test_description        reference_range test_ID
+28      CREATININE      0.6 - 1.4 mg/dl 1
+29      SODIUM  135-155 mmol/L  1
+30      POTASSIUM       3.5-5.5 mmol/L  1
+*/
+
+
+CREATE TABLE test_results (
+        `ID` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        patient_id INTEGER(11) NOT NULL,
+        patient_registry_id INTEGER(11) NOT NULL,
+        test_id INTEGER(11) NOT NULL,
+        observed_value VARCHAR(255),
+        PRIMARY KEY (`ID`),
+        CONSTRAINT test_results_ibfk_1 FOREIGN KEY(patient_id) REFERENCES patients (`Id`),
+        CONSTRAINT test_results_ibfk_2 FOREIGN KEY(patient_registry_id) REFERENCES patient_registry (`ID`),
+        CONSTRAINT test_results_ibfk_3 FOREIGN KEY(test_id) REFERENCES tests (`ID`)
+)DEFAULT CHARSET=utf8mb4 ENGINE=InnoDB
+
+/*
+3 rows from test_results table:
+ID      patient_id      patient_registry_id     test_id observed_value
+1       1       412     1       1.16
+2       1       412     1       138.3
+3       1       412     1       3.61
+*/
+
+
+CREATE TABLE tests (
+        `ID` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        testname VARCHAR(100) NOT NULL,
+        `test_ID` INTEGER(11) NOT NULL,
+        PRIMARY KEY (`ID`)
+)DEFAULT CHARSET=utf8mb4 ENGINE=InnoDB
+
+/*
+3 rows from tests table:
+ID      testname        test_ID
+1       BIOCHEMISTRY    1
+2       URINE ROUTINE   2
+3       COMPLETE BLOOD COUNT    3
+*/
+
+Question: how many patients are there?
