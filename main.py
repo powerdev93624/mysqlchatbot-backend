@@ -34,7 +34,7 @@ def write_query(question):
     print(structured_llm.invoke([SystemMessage(content=prompt),AIMessage(content="okay, please ask any question."), HumanMessage(content=question)]))
 
 if __name__ == "__main__":
-    question = "how many patients are there?"
+    question = "List all patients'names."
     write_query(question)
     
 
