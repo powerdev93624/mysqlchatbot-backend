@@ -31,3 +31,226 @@ Id      uhid_no Name    Gender
 2       180154  Mr. Qudar Sayyed        male
 3       157532  Mr. Shabbir Ahmed Khan  male
 */
+
+CREATE TABLE pma_patient_notes1 (
+        id INTEGER(11) NOT NULL AUTO_INCREMENT,
+        patient_id INTEGER(11) NOT NULL,
+        admin_key VARCHAR(250) NOT NULL,
+        category_type_id INTEGER(11) NOT NULL,
+        sub_category_id INTEGER(11) NOT NULL,
+        folder_id INTEGER(11) NOT NULL DEFAULT 0,
+        notes LONGTEXT NOT NULL,
+        notCREATE TABLE patient_registry (
+        `ID` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        age INTEGER(11) NOT NULL,
+        patient_id VARCHAR(255),
+        consultant_dr VARCHAR(100),
+        referred_by VARCHAR(100),
+        ward_bed VARCHAR(50),
+        registered_on DATETIME,
+     e_remark TEXT,
+        data_size VARCHAR(255) NOT NULL DEFAULT '0',
+        thumbnail VARCHAR(250),
+        page_id INTEGER(11) NOT NULL,
+        pharmacy_status INTEGER(11) COMMENT '0-pending,1-Done' DEFAULT 0,
+        lock_unlock INTEGER(11) COMMENT '0=Unlock,1=Lock' DEFAULT 0,
+        `IntegrationOrderId` VARCHAR(250),
+        `LabId` BIGINT(20),
+        added DATETIME NOT NULL,
+        updated DATETIME NOT NULL,
+        transfer_by VARCHAR(255),
+        transfer_at DATETIME NOT NULL,
+        done_by INTEGER(11),
+        done_at DATETIME,
+        done_by_name VARCHAR(250),
+        whatsapp_count TINYINT(10),
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from pma_patient_notes1 table:
+id      patient_id      admin_key       category_type_id        sub_category_id folder_id       notes   note_remark     data_size  thumbnail        page_id pharmacy_status lock_unlock     IntegrationOrderId      LabId   added   updated transfer_by     transfer_at 
+done_by done_at done_by_name    whatsapp_count
+56060438        1077630 306     11676   0       0       IPD/306/2024/1077630/d_1077630_11676_1732956740753.png          152.24  None34      0       0       None    None    2024-11-26 11:02:28     2024-11-30 14:22:21     None    None    None    None    None    None56213442        1077630 306     11683   0       0       IPD/306/2024/1077630/d_1077630_11683_1732985325823.png          134.16  None7       0       0       None    None    2024-11-27 18:34:13     2024-11-30 22:18:47     None    None    None    None    None    None56230663        1077630 306     11683   0       0       IPD/306/2024/1077630/d_1077630_11683_1733232386251.png          140.32  None8       0       0       None    None    2024-11-27 22:08:15     2024-12-03 18:56:27     None    None    None    None    None    None*/
+
+
+CREATE TABLE report_data (
+        `ID` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        patient_registry_id INTEGER(11) NOT NULL,
+        reported_on DATETIME NOT NULL,
+        `test_ID` INTEGER(11) NOT NULL,
+        PRIMARY KEY (`ID`),
+        CONSTRAINT report_data_ibfk_1 FOREIGN KEY(patient_registry_id) REFERENCES patient_registry (`ID`),
+        CONSTRAINT report_data_ibfk_2 FOREIGN KEY(`test_ID`) REFERENCES tests (`ID`)
+)DEFAULT CHARSET=utf8mb4 ENGINE=InnoDB
+
+/*
+3 rows from report_data table:
+ID      patient_registry_id     reported_on     test_ID
+1       1       2024-04-23 16:10:00     3
+2       1       2024-04-23 16:10:00     5
+3       2       2024-07-28 12:05:00     3
+*/
+
+
+CREATE TABLE tbl_note_clinical_notes_data (
+        id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        note_id INTEGER(11) UNSIGNED NOT NULL,
+        clinical_notes TEXT NOT NULL,
+        pos_x FLOAT(10, 2),
+        pos_y FLOAT(10, 2),
+        added TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+        updated TIMESTAMP NULL,
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from tbl_note_clinical_notes_data table:
+id      note_id clinical_notes  pos_x   pos_y   added   updated
+83      56400596        Gggg    25.0    530.9   2024-11-29 07:19:42     2024-11-29 07:19:42
+84      56401015        Gggg    25.0    530.9   2024-11-29 07:23:35     2024-11-29 07:23:35
+85      56401032        Gggg    25.0    530.9   2024-11-29 07:23:45     2024-11-29 07:23:45
+*/
+
+
+CREATE TABLE tbl_note_diagnosis_data (
+        id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        note_id INTEGER(11) UNSIGNED NOT NULL,
+        icd_code VARCHAR(150) NOT NULL,
+        diagnosis VARCHAR(250) NOT NULL,
+        pos_x FLOAT(10, 2),
+        pos_y FLOAT(10, 2),
+        added TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+        updated TIMESTAMP NULL,
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from tbl_note_diagnosis_data table:
+id      note_id icd_code        diagnosis       pos_x   pos_y   added   updated
+19      56515001                # DISTAL END OF RADIUS  25.0    530.9   2024-11-30 08:40:56     2024-11-30 08:40:56
+20      56515624                # DISTAL END OF RADIUS  25.0    530.9   2024-11-30 08:49:08     2024-11-30 08:49:08
+21      56515654                # DISTAL END OF RADIUS  25.0    530.9   2024-11-30 08:49:34     2024-11-30 08:49:34
+*/
+
+
+CREATE TABLE tbl_note_medicine_data (
+        id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        note_id INTEGER(11) UNSIGNED NOT NULL,
+        medicine VARCHAR(250),
+        route VARCHAR(100),
+        m_qty VARCHAR(100),
+        a_qty VARCHAR(100),
+        e_qty VARCHAR(100),
+        n_qty VARCHAR(100),
+        abf VARCHAR(250) CHARACTER SET utf8,
+        duration VARCHAR(250) CHARACTER SET utf8,
+        unit VARCHAR(255) DEFAULT 'Days',
+        instructions VARCHAR(500) CHARACTER SET utf8,
+        added TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+        updated TIMESTAMP NULL,
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from tbl_note_medicine_data table:
+id      note_id medicine        route   m_qty   a_qty   e_qty   n_qty   abf     duration        unit    instructions    added   updated
+146     56515001        TAB ABYPHYLILINE SR 200 MG      Oral    1       0       0       0       After Food      1       Days       2024-11-30 08:40:56      2024-11-30 08:40:56
+147     56515001        B D SYRINGES 5 CC               0       0       0       0                                       2024-11-30 08:40:56 2024-11-30 08:40:56
+148     56515001        CAP CANDIFORCE 200MG            0       0       0       0                                       2024-11-30 08:40:56 2024-11-30 08:40:56
+*/
+
+
+CREATE TABLE tbl_note_nurses_notes_data (
+        id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        note_id INTEGER(11) UNSIGNED NOT NULL,
+        nurses_notes TEXT NOT NULL,
+        pos_x FLOAT(10, 2),
+        pos_y FLOAT(10, 2),
+        added TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+        updated TIMESTAMP NULL,
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from tbl_note_nurses_notes_data table:
+id      note_id nurses_notes    pos_x   pos_y   added   updated
+342     56455475                25.0    530.9   2024-11-29 17:40:29     2024-11-29 17:40:29
+343     56455475                25.0    530.9   2024-11-29 17:41:47     2024-11-29 17:41:47
+344     56404610                25.0    530.9   2024-11-29 17:42:39     2024-11-29 17:42:39
+*/
+
+
+CREATE TABLE tbl_note_symptoms_data (
+        id INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+        note_id INTEGER(11) UNSIGNED NOT NULL,
+        symptoms TEXT NOT NULL,
+        pos_x FLOAT(10, 2),
+        pos_y FLOAT(10, 2),
+        added TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+        updated TIMESTAMP NULL,
+        PRIMARY KEY (id)
+)DEFAULT CHARSET=latin1 ENGINE=InnoDB
+
+/*
+3 rows from tbl_note_symptoms_data table:
+id      note_id symptoms        pos_x   pos_y   added   updated
+17      56402169        See where respiratory discharge with orthopenea with gasting condition having already CET and Hospit    25.0530.9   2024-11-29 07:33:33     2024-11-29 07:33:33
+18      56402428        See where respiratory discharge with orthopenea with gasting condition having already CET and Hospit    25.0530.9   2024-11-29 07:35:48     2024-11-29 07:35:48
+19      56402446        See where respiratory discharge with orthopenea with gasting condition having already CET and Hospit    25.0530.9   2024-11-29 07:35:57     2024-11-29 07:35:57
+*/
+
+
+CREATE TABLE test_catalog (
+        `ID` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        test_description VARCHAR(255) NOT NULL,
+        reference_range VARCHAR(255),
+        `test_ID` INTEGER(11) NOT NULL,
+        PRIMARY KEY (`ID`),
+        CONSTRAINT test_catalog_ibfk_1 FOREIGN KEY(`test_ID`) REFERENCES tests (`ID`)
+)DEFAULT CHARSET=utf8mb4 ENGINE=InnoDB
+
+/*
+3 rows from test_catalog table:
+ID      test_description        reference_range test_ID
+28      CREATININE      0.6 - 1.4 mg/dl 1
+29      SODIUM  135-155 mmol/L  1
+30      POTASSIUM       3.5-5.5 mmol/L  1
+*/
+
+
+CREATE TABLE test_results (
+        `ID` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        patient_id INTEGER(11) NOT NULL,
+        patient_registry_id INTEGER(11) NOT NULL,
+        test_id INTEGER(11) NOT NULL,
+        observed_value VARCHAR(255),
+        PRIMARY KEY (`ID`),
+        CONSTRAINT test_results_ibfk_1 FOREIGN KEY(patient_id) REFERENCES patients (`Id`),
+        CONSTRAINT test_results_ibfk_2 FOREIGN KEY(patient_registry_id) REFERENCES patient_registry (`ID`),
+        CONSTRAINT test_results_ibfk_3 FOREIGN KEY(test_id) REFERENCES tests (`ID`)
+)DEFAULT CHARSET=utf8mb4 ENGINE=InnoDB
+
+/*
+3 rows from test_results table:
+ID      patient_id      patient_registry_id     test_id observed_value
+1       1       412     1       1.16
+2       1       412     1       138.3
+3       1       412     1       3.61
+*/
+
+
+CREATE TABLE tests (
+        `ID` INTEGER(11) NOT NULL AUTO_INCREMENT,
+        testname VARCHAR(100) NOT NULL,
+        `test_ID` INTEGER(11) NOT NULL,
+        PRIMARY KEY (`ID`)
+)DEFAULT CHARSET=utf8mb4 ENGINE=InnoDB
+
+/*
+3 rows from tests table:
+ID      testname        test_ID
+1       BIOCHEMISTRY    1
+2       URINE ROUTINE   2
+3       COMPLETE BLOOD COUNT    3
+*/
