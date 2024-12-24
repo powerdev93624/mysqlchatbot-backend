@@ -7,7 +7,7 @@ from langchain_ollama import ChatOllama
 
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 
-llm = ChatOllama(model="llama3.3", max_tokens=3000, temperature=0.7, verbose=True)
+llm = ChatOllama(model="llama3.3", verbose=True)
 
 query_prompt_template = hub.pull("langchain-ai/sql-query-system-prompt")
 
@@ -33,7 +33,7 @@ def write_query(question):
     # print(structured_llm.invoke(prompt))
 
 if __name__ == "__main__":
-    question = "how many patients are there?"
+    question = "how many people are there?"
     write_query(question)
     
 
