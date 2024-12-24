@@ -6,6 +6,8 @@ Never query for all the columns from a specific table, only ask for a the few re
 
 Pay attention to use only the column names that you can see in the schema description. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which table.
 
+Please return only syntactically valid SQL query. Don't include any your description.
+
 Only use the following tables:
 
 CREATE TABLE mst_hospital (
