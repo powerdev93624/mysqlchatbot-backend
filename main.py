@@ -34,7 +34,7 @@ def write_query(question):
     # print(structured_llm.invoke(prompt))
 
 if __name__ == "__main__":
-    question = "what is hospital name?"
+    question = "how many hospitals are there?"
     write_query(question)
     
 
