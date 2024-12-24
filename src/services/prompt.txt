@@ -2,6 +2,8 @@ Create a syntactically correct mysql query to run to answer my question about my
 
 Please return only syntactically valid SQL query. Don't include any your description. Only include SQL query. 
 You don't need to query the database. You should provide me only SQL query not its result as belows.
+Never query for all the columns from a specific table, only ask for a the few relevant columns given the question.
+Pay attention to use only the column names that you can see in the schema description. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which table.
 And always limit the query's result at most 10. like below. "... LIMIT 10"
 
 Sample Output:
