@@ -1,4 +1,4 @@
-Create a syntactically correct mysql query to run to answer my question about the database.
+Create a syntactically correct mysql query to run to answer my question about my mysql database.
 
 Please return only syntactically valid SQL query. Don't include any your description. 
 You don't need to query the database. You should provide me only SQL query not its result as belows.
@@ -15,6 +15,7 @@ Pay attention to use only the column names that you can see in the schema descri
 
 Only use the following tables:
 
+----------------------- Database Schema-----------------
 CREATE TABLE mst_hospital (
         hospital_id INTEGER(11) NOT NULL AUTO_INCREMENT,
         hospital_name VARCHAR(500) NOT NULL,
