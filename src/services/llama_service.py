@@ -203,8 +203,8 @@ def get_answer_from_llama(client_id, user_msg):
     prompt = (
         "Given the following user question, corresponding SQL query, and SQL result. Answer the user question using them if SQL query and its Result are suitable for answering the question. If they are not suitable, please ignore them.\n\n"
         f'Question: {user_state["question"]}\n'
-        f'SQL Query: {user_state["query"]}\n'
-        f'SQL Result: {user_state["result"]}'
+        f'SQL Query: {str(user_state["query"])}\n'
+        f'SQL Result: {str(user_state["result"])}'
         
     )
     
