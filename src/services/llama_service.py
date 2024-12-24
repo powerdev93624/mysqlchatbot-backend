@@ -220,6 +220,7 @@ def get_answer_from_llama(client_id, user_msg):
                 llm_response += chunk.content
             except:
                 yield("")
+    print(llm_response)
     bot_msg_obj = ChatHistory(
         id=uuid.uuid4(),
         user_id = client_id,
