@@ -31,7 +31,8 @@ from langchain_ollama import ChatOllama
 
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 
-llm = ChatOllama(model="qwq")
+llm = ChatOllama(model="llama3.3", num_predict=-2)
+
 
 # if os.getenv("APP_ENV") == "development":
 #     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
@@ -81,19 +82,21 @@ class QueryOutput(TypedDict):
 
 
 def write_query(state: State):
-    """Generate SQL query to fetch information."""
-    prompt = query_prompt_template.invoke(
-        {
-            "dialect": healthcare_db.dialect,
-            "top_k": 10,
-            "table_info": healthcare_db.get_table_info(),
-            "input": state["question"],
-        }
-    )
+    print("question: ", state["question"])
+    # prompt = query_prompt_template.invoke(
+    #     {
+    #         "dialect": healthcare_db.dialect,
+    #         "top_k": 1,
+    #         "table_info": healthcare_db.get_table_info(),
+    #         "input": question,
+    #     }
+    # )
+    # prompt = f"Write syntactically valid SQL query for this question.\n\n qeustion: {question}"
+    with open("prompt.txt", "r") as file:
+        prompt = file.read()
     structured_llm = llm.with_structured_output(QueryOutput)
-    result = structured_llm.invoke(prompt)
-    print(result)
-    return {"query": result["query"]}
+    res = structured_llm.invoke([SystemMessage(content=prompt),AIMessage(content="okay, please ask any question."), HumanMessage(content=state["question"])])
+    return {"query": res["query"]}
 
 def execute_query(state: State):
     """Execute SQL query."""
@@ -186,9 +189,6 @@ def get_answer_from_llama(client_id, user_msg):
     user_state = State(
         question=user_msg,
         )
-    print("question: ", user_state["question"])
-    print(write_query(user_state))
-    exit()
     user_state["query"] = write_query(user_state)["query"]
     print("query: ", user_state["query"])
     yield(user_state["query"])
