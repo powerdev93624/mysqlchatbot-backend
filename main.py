@@ -16,18 +16,19 @@ class QueryOutput(TypedDict):
 
 def write_query(question):
     print("question: ", question)
-    prompt = query_prompt_template.invoke(
-        {
-            "dialect": healthcare_db.dialect,
-            "top_k": 10,
-            "table_info": healthcare_db.get_table_info(),
-            "input": question,
-        }
-    )
-    print(llm.invoke(f"Write syntactically valid SQL query for this question.\n\n qeustion: {question}"))
-    # structured_llm = llm.with_structured_output(QueryOutput)
-    # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    # print(structured_llm.invoke(prompt))
+    # prompt = query_prompt_template.invoke(
+    #     {
+    #         "dialect": healthcare_db.dialect,
+    #         "top_k": 10,
+    #         "table_info": healthcare_db.get_table_info(),
+    #         "input": question,
+    #     }
+    # )
+    prompt = f"Write syntactically valid SQL query for this question.\n\n qeustion: {question}"
+    print(llm.invoke(prompt))
+    structured_llm = llm.with_structured_output(QueryOutput)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print(structured_llm.invoke(prompt))
 
 if __name__ == "__main__":
     question = "how many patients are there?"
