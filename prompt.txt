@@ -1,6 +1,6 @@
 Create a syntactically correct mysql query to run to answer my question about my mysql database.
 
-Please return only syntactically valid SQL query. Don't include any your description. 
+Please return only syntactically valid SQL query. Don't include any your description. Only include SQL query. 
 You don't need to query the database. You should provide me only SQL query not its result as belows.
 
 Sample Output:
