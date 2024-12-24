@@ -8,7 +8,7 @@ from langchain_core.messages import HumanMessage
 
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 
-llm = ChatOllama(model="llama3.3", verbose=True)
+llm = ChatOllama(model="llama3.3", num_predict=3000, verbose=True)
 
 query_prompt_template = hub.pull("langchain-ai/sql-query-system-prompt")
 
