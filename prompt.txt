@@ -244,5 +244,4 @@ bill_auto       bill_start_from bill_no_year_format     login_device_status     
 
 
 
-
 Question: how many patients are there?
