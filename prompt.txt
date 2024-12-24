@@ -1,14 +1,14 @@
-Create a syntactically correct mysql query to run to help find the answer to below question. 
-
-
+Create a syntactically correct mysql query to run to answer my question about the database.
 
 Please return only syntactically valid SQL query. Don't include any your description. 
 You don't need to query the database. You should provide me only SQL query not its result as belows.
-*************Sample Output****************
+
+Sample Output:
 SQL: SELECT * FROM patients;
-*************Sample Output****************
+
+Sample Output:
 SQL: SELECT COUNT(DISTINCT patient_id) FROM test_results;
-*****************************
+
 Never query for all the columns from a specific table, only ask for a the few relevant columns given the question.
 
 Pay attention to use only the column names that you can see in the schema description. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which table.
@@ -241,7 +241,3 @@ bed_new_format  discharge_first_page_space      allow_admission_without_header  
 bill_auto       bill_start_from bill_no_year_format     login_device_status     patient_registration    patient_registration_web_view       billing_link_service    oncology_lab_test       oncology_contact_person oncology_contact_no     oncology_contact_email  patient_history_btn_grp     paymode_display_bill    login_other_status      hospital_type   lab_no_generate_status  heading_condition  no_activity      discharge_flow  word_to_pdf     pdf_compress    discharge_summary_duplicate_copy        discharge_summary_header_all_pages  deposit_lowest_amount   dis_text_transform      patient_sticker billing_format  dis_patient_details_all_pages   dis_underline_all_header    dis_box_for_all_header  radiology_report        emergency_no    patient_file_status_filter      appt_qr appt_date_past_date_allow   hospital_code   hospital_district       allow_ipd_integration   allow_opd_integration   admission_card_title    addressograph_color lock_ipd_after_clinical_disc    online_only_status      lab_report_sync hospital_website        aws_permission  adm_date_past_date_allow
 306     CHIRAYU HOSPITAL (JAIPUR)       CHIRAYU HOSPITAL        2023-10-13 00:00:00     2024-10-12 00:00:00     32000   23      97920       None    91      None    None    None    7230025066      IPD/Discharge_header/discharge_header_1660885323.jpg    None    NoneNone    None    None    Kalwar Rd, Hathoj, Jaipur, Rajasthan 302012     Jaipur  None    None    None    0       123456  1212    #0000FF     #FF0000 4       None    None    None    None    None    None    None    0       0       1       None    20      5       45 20       None    3       None    20      5       5       20      None    3       None    12      5       120     20      None    3  12       5       120     20      None    3       12      5       120     20      None    3       12      5       70      20      0  320      2       13      12      0       3       A       <p><span style="font-size: 1rem;"> </span></p>  1       <ol><li>While taking admission I/We, have read & understood all the charges of your hospital, which         None    0       1       None    2       NoneNone    None    None    None    None    None    None    None    None    None    None    None    None    0       None    0       1  2022-08-13 10:23:44      1       2024-11-28 11:37:23     1       0       0       0       0       0       None    None    None    9  10       5       30      40      1       3       10      5       30      40      1       3       3       None    None    None    0  None     5       5       5       20      1       3       5       5       5       20      1       3       None    0       None    NoneNone    None    None    None    None    None    None    1       None    None    0       None    None    None    None    0       NoneNone    1       0       1       0       0       0       1       0       0       0.00    none    0       0       0       0       0  0None    1       0       1       None    None    None    None    None    0       0       0       0       None    1       None        
 */
-
-
-
-Question: how many patients are there?
