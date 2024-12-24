@@ -96,8 +96,10 @@ def write_query(state: State):
         prompt = file.read()
     structured_llm = llm.with_structured_output(QueryOutput)
     res = structured_llm.invoke([SystemMessage(content=prompt),AIMessage(content="okay, please ask any question."), HumanMessage(content=state["question"])])
-    print(res)
-    return {"query": res["query"]}
+    if res:
+        return {"query": res["query"]}
+    else:
+        return {"query": None}
 
 def execute_query(state: State):
     """Execute SQL query."""
@@ -193,7 +195,10 @@ def get_answer_from_llama(client_id, user_msg):
     user_state["query"] = write_query(user_state)["query"]
     print("query: ", user_state["query"])
     yield(user_state["query"])
-    user_state["result"] = execute_query(user_state)["result"]
+    if user_state["query"]:
+        user_state["result"] = execute_query(user_state)["result"]
+    else:
+        user_state["result"] = None
     print("result: ", user_state["result"])
     prompt = (
         "Given the following user question, corresponding SQL query, and SQL result. Answer the user question using them if SQL query and its Result are suitable for answering the question. If they are not suitable, please ignore them.\n\n"
