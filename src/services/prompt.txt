@@ -2,7 +2,7 @@ Create a syntactically correct mysql query to run to answer my question about my
 
 Please return only syntactically valid SQL query. Don't include any your description. Only include SQL query. 
 You don't need to query the database. You should provide me only SQL query not its result as belows.
-And always limit the query result at most 10.
+And always limit the query's result at most 10. like below. "... LIMIT 10"
 
 Sample Output:
 SQL: SELECT * FROM patients LIMIT 10;
