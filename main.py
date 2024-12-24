@@ -3,6 +3,7 @@ from typing_extensions import TypedDict
 from langchain import hub
 from typing_extensions import Annotated
 from langchain_ollama import ChatOllama
+from langchain_core.messages import HumanMessage
 
 
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
@@ -27,10 +28,10 @@ def write_query(question):
     # prompt = f"Write syntactically valid SQL query for this question.\n\n qeustion: {question}"
     with open("prompt.txt", "r") as file:
         prompt = file.read()
-    print(llm.invoke(prompt))
-    structured_llm = llm.with_structured_output(QueryOutput)
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    print(structured_llm.invoke(prompt))
+    print(llm.invoke([HumanMessage(content=prompt)]))
+    # structured_llm = llm.with_structured_output(QueryOutput)
+    # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    # print(structured_llm.invoke(prompt))
 
 if __name__ == "__main__":
     question = "how many people are there?"
