@@ -1,11 +1,17 @@
-Given an input question, create a syntactically correct mysql query to run to help find the answer. 
-Please return only syntactically valid SQL query. Don't include any your description. Unless the user specifies in his question a specific number of examples they wish to obtain, always limit your query to at most 1 results. 
+Create a syntactically correct mysql query to run to help find the answer to below question. 
 
+Question: how many patients are there?
+
+Please return only syntactically valid SQL query. Don't include any your description. 
+You don't need to query the database. You should provide me only SQL query not its result as belows.
+*************Sample Output****************
+SQL: SELECT * FROM patients;
+*************Sample Output****************
+SQL: SELECT COUNT(DISTINCT patient_id) FROM test_results;
+*****************************
 Never query for all the columns from a specific table, only ask for a the few relevant columns given the question.
 
 Pay attention to use only the column names that you can see in the schema description. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which table.
-
-
 
 Only use the following tables:
 
@@ -663,4 +669,3 @@ ID      testname        test_ID
 3       COMPLETE BLOOD COUNT    3
 */
 
-Question: how many patients are there?
