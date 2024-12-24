@@ -16,15 +16,17 @@ class QueryOutput(TypedDict):
 
 def write_query(question):
     print("question: ", question)
-    prompt = query_prompt_template.invoke(
-        {
-            "dialect": healthcare_db.dialect,
-            "top_k": 1,
-            "table_info": healthcare_db.get_table_info(),
-            "input": question,
-        }
-    )
+    # prompt = query_prompt_template.invoke(
+    #     {
+    #         "dialect": healthcare_db.dialect,
+    #         "top_k": 1,
+    #         "table_info": healthcare_db.get_table_info(),
+    #         "input": question,
+    #     }
+    # )
     # prompt = f"Write syntactically valid SQL query for this question.\n\n qeustion: {question}"
+    with open("prompt.txt", "r") as file:
+        prompt = file.read()
     print(llm.invoke(prompt))
     # structured_llm = llm.with_structured_output(QueryOutput)
     # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
