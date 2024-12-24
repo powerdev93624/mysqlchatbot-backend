@@ -29,9 +29,9 @@ def write_query(question):
     with open("prompt.txt", "r") as file:
         prompt = file.read()
     print(llm.invoke([SystemMessage(content=prompt),AIMessage(content="okay, please ask any question."), HumanMessage(content=question)]))
-    # structured_llm = llm.with_structured_output(QueryOutput)
-    # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    # print(structured_llm.invoke(prompt))
+    structured_llm = llm.with_structured_output(QueryOutput)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print(structured_llm.invoke([SystemMessage(content=prompt),AIMessage(content="okay, please ask any question."), HumanMessage(content=question)]))
 
 if __name__ == "__main__":
     question = "how many patients are there?"
