@@ -31,13 +31,13 @@ from langchain_ollama import ChatOllama
 
 healthcare_db = SQLDatabase.from_uri("mysql://root:@127.0.0.1/presco_widget_data")  
 
-llm = ChatOllama(model="llama3.3", num_predict=-2)
+# llm = ChatOllama(model="llama3.3", num_predict=-2)
 
 
-# if os.getenv("APP_ENV") == "development":
-#     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
-# else:
-#     llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
+if os.getenv("APP_ENV") == "development":
+    llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), openai_proxy=os.getenv("OPENAI_PROXY"))
+else:
+    llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
 query_prompt_template = hub.pull("langchain-ai/sql-query-system-prompt")
 
 def str_token_counter(text: str) -> int:
@@ -83,19 +83,20 @@ class QueryOutput(TypedDict):
 
 def write_query(state: State):
     print("question: ", state["question"])
-    # prompt = query_prompt_template.invoke(
-    #     {
-    #         "dialect": healthcare_db.dialect,
-    #         "top_k": 1,
-    #         "table_info": healthcare_db.get_table_info(),
-    #         "input": question,
-    #     }
-    # )
+    prompt = query_prompt_template.invoke(
+        {
+            "dialect": healthcare_db.dialect,
+            "top_k": 1,
+            "table_info": healthcare_db.get_table_info(),
+            "input": state["question"],
+        }
+    )
     # prompt = f"Write syntactically valid SQL query for this question.\n\n qeustion: {question}"
-    with open("prompt.txt", "r") as file:
-        prompt = file.read()
+    # with open("prompt.txt", "r") as file:
+    #     prompt = file.read()
     structured_llm = llm.with_structured_output(QueryOutput)
-    res = structured_llm.invoke([SystemMessage(content=prompt),AIMessage(content="okay, please ask any question."), HumanMessage(content=state["question"])])
+    # res = structured_llm.invoke([SystemMessage(content=prompt),AIMessage(content="okay, please ask any question."), HumanMessage(content=state["question"])])
+    res = structured_llm.invoke(prompt)
     if res:
         return {"query": res["query"]}
     else:
